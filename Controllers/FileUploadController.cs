@@ -34,10 +34,14 @@ namespace TestPlayground.Controllers
 
         [HttpPost("Upload")]
         public async Task<IActionResult> Upload(IFormFile file) {
-
+            Console.WriteLine("***" + file);
             if(file == null) return BadRequest("NULL FILE");
             if(file.Length == 0) return BadRequest("Empty File");
-
+            Console.WriteLine("***" + host.WebRootPath);
+            if (string.IsNullOrWhiteSpace(host.WebRootPath))
+            {
+                host.WebRootPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
+            }
             var uploadsFolderPath = Path.Combine(host.WebRootPath, "uploads");
             if (!Directory.Exists(uploadsFolderPath)) Directory.CreateDirectory(uploadsFolderPath);
             var fileName = "Master" + Path.GetExtension(file.FileName);
